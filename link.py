@@ -178,6 +178,8 @@ Pa=0.9999
 
 disponibilidadeSistema = Pa * disponibilidadeSatelite * disponibilidadeLink
 
+#9º CÁLCULO DA INDISPONIBILIDADE DO SISTEMA EM HORAS
+indisponibilidade=(1-disponibilidadeSistema)*(365*24)
 
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
