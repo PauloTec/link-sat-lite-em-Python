@@ -62,10 +62,16 @@ distancia_sat_EstTerrenaB = math.sqrt(aux1 - (aux2*aux4))
 #----Estação A
 auxiliar1 = CentroMassa/RaioTerra
 auxiliar11 = math.cos(latitudeEstacaoTerrenaA)*math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)
-auxiliar12 = math.pow(auxiliar1,2)
+auxiliar12 = math.pow(auxiliar1,2) #Quadrado do auxiliar 1
 
 elevacaoA = (aux1*auxiliar11-1)/(math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar11))
 anguloElevacaoA = 90-math.acos(elevacaoA)
+
+#----Estação B
+auxiliar13 = math.cos(latitudeEstacaoTerrenaB)*math.cos(longitudeEstacaoTerrenaB-longitudeSatelite)
+
+elevacaoB = (aux1*auxiliar13-1)/(math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar13))
+anguloElevacaoB = 90-math.acos(elevacaoB)
 
 #-----------------------
 #CALCULO DO AZIMUTE DAS ESTAÇÕES TERRENAS
@@ -108,6 +114,34 @@ atenEspacoLivre_dB2 = 10*math.log10(atenEspacoLivre2)
 
 #Atenuação total sem chuva
 atenEspacoLivre_semChuva2 = atenEspacoLivre_dB2 + La
+
+
+# 3º INCLINAÇÃO DO PERCURSO NA CHUVA
+inclinacaoPercursoChuvaA = ((hr-hs)*1000)/math.sin(anguloElevacaoA)
+inclinacaoPercursoChuvaB = ((hr-hs)*1000)/math.sin(anguloElevacaoB)
+#Hr - altitude da Chuva em Km, ver nas constantes acima
+#Hs - Altitude da Estação Terrena em relação ao nível do mar, Para Angola varia de 1.5 Km à 1.5 Km, ver nas constantes acima
+
+#Conversão em dB
+inclinacaoPercursoChuvaA_dB = 10*math.log10(inclinacaoPercursoChuvaA)
+inclinacaoPercursoChuvaB_dB = 10*math.log10(inclinacaoPercursoChuvaB)
+
+# 4º DISTÂNCIA DA CHUVA COM TAXA PLUVIOMÉTRICA
+taxaPluvometrica = 50 #corresponde ao R0,001; ver na definição das constantes
+aux = (-0.015)*taxaPluvometrica
+distanciaChuva = 35*math.pow(euler,aux)
+
+# 4.1º DISTÂNCIA DA CHUVA PARA R DE 1%
+auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
+distanciaChuva_R001 = 1/(1+auxiliando)
+
+#5º CÁLCULO DA ATENUAÇÃO NO PERCURSO DE DESCIDA COM CHUVA
+auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001
+auxiliando1_dB = 10*math.log10(auxiliando1)
+
+atenEspacoLivre_comChuva = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
+
+
 
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
