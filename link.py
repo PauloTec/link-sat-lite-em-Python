@@ -181,6 +181,13 @@ disponibilidadeSistema = Pa * disponibilidadeSatelite * disponibilidadeLink
 #9º CÁLCULO DA INDISPONIBILIDADE DO SISTEMA EM HORAS
 indisponibilidade=(1-disponibilidadeSistema)*(365*24)
 
+#10º CÁLCULO DA TEMPERATURA DO SISTEMA
+#TG e Tsky,obtido de acordo o ângulo de elevação em graus TG - 10º <AngElev < 90º e Tsky - ângulo de elevação = 68.2º Segundo a Tabela.
+TG = 10
+Tsky = 16
+temperaturaSistema = TG + Tsky
+
+
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
 print("Longitude Estação terrena - ",longitudeEstacaoTerrenaA,"º")
