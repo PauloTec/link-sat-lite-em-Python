@@ -165,6 +165,13 @@ perdaRx = 12*math.pow(auxiliando4,2)
 #Em db
 perdaRx_dB = 10*math.log10(perdaRx)
 
+#7º CÁLCULO DA DISPONIBILIDADE DO LINK
+pu=0.005
+pd=0.005
+p=pu+pd
+
+disponibilidadeLink = 1 - (p/100)
+
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
 print("Longitude Estação terrena - ",longitudeEstacaoTerrenaA,"º")
