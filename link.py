@@ -133,15 +133,37 @@ distanciaChuva = 35*math.pow(euler,aux)
 
 # 4.1º DISTÂNCIA DA CHUVA PARA R DE 1%
 auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
-distanciaChuva_R001 = 1/(1+auxiliando)
+auxiliando2 = (inclinacaoPercursoChuvaB/distanciaChuva)*math.cos(anguloElevacaoB)
+distanciaChuva_R001_A = 1/(1+auxiliando)
+distanciaChuva_R001_B = 1/(1+auxiliando2)
 
 #5º CÁLCULO DA ATENUAÇÃO NO PERCURSO DE DESCIDA COM CHUVA
-auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001
+#Estação A
+auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001_A
 auxiliando1_dB = 10*math.log10(auxiliando1)
 
-atenEspacoLivre_comChuva = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
+atenEspacoLivre_comChuva_A = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
 
+#Estação B
+auxiliando2 = Aesp * inclinacaoPercursoChuvaB_dB * distanciaChuva_R001_B
+auxiliando2_dB = 10*math.log10(auxiliando2)
 
+atenEspacoLivre_comChuva_B = La + inclinacaoPercursoChuvaB_dB + auxiliando2_dB
+
+#6º CÁLCULO DA PERDA NA TRANSMISSÃO
+erroMaximoApontamento = 0.1 #Encontrar na definição de constantes
+auxiliando3 = (erroMaximoApontamento*distancia_sat_EstTerrenaA*frequenciaUplink)/(70*velocidadeLuz)
+
+perdaTx = 12*math.pow(auxiliando3,2)
+#Em db
+perdaTx_dB = 10*math.log10(perdaTx)
+
+#6.1º CÁLCULO DA PERDA NA RECEPÇÃO
+auxiliando4 = (erroMaximoApontamento*distancia_sat_EstTerrenaB*frequenciaDownlink)/(70*velocidadeLuz)
+
+perdaRx = 12*math.pow(auxiliando4,2)
+#Em db
+perdaRx_dB = 10*math.log10(perdaRx)
 
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
