@@ -172,6 +172,13 @@ p=pu+pd
 
 disponibilidadeLink = 1 - (p/100)
 
+#8º CÁLCULO DA DISPONIBILIDADE DO SISTEMA
+disponibilidadeSatelite=0.9999
+Pa=0.9999
+
+disponibilidadeSistema = Pa * disponibilidadeSatelite * disponibilidadeLink
+
+
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
 print("Longitude Estação terrena - ",longitudeEstacaoTerrenaA,"º")
