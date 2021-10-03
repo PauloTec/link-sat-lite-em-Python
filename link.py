@@ -31,8 +31,6 @@ Aesp1 = 1.2 #Atenuação Específica Calculado atraves da frequencia Fd
 Roo11= 30.2  #Taxa de precipitação ou Queda de chuva
 euler = 2.7 #Constante de euler
 
-
-
 #---------------------- INSERIR DADOS PARA O CÁLCULO
 
 #-- 1º LOCALIZAÇÃO DAS ESTAÇÕES
@@ -43,8 +41,8 @@ nomeEstacaoB = input('Nome da localização da estaçao B - ')
 latitudeEstacaoTerrenaA = int(input("Insere a latitude da estação terrena 1: "))
 longitudeEstacaoTerrenaA = int(input("Insere a longitude da estação terrena 1: "))
 
-latitudeEstacaoTerrenaB = int(input("Insere a latitude da estação terrena 1: "))
-longitudeEstacaoTerrenaB = int(input("Insere a longitude da estação terrena 1: "))
+latitudeEstacaoTerrenaB = int(input("Insere a latitude da estação terrena 2: "))
+longitudeEstacaoTerrenaB = int(input("Insere a longitude da estação terrena 2: "))
 
 #-- 1.2º Latitudes e longitudes do satélite
 longitudeSatelite = int(input("Insere a longitude do satélite: "))
@@ -64,25 +62,27 @@ auxiliar1 = CentroMassa/RaioTerra
 auxiliar11 = math.cos(latitudeEstacaoTerrenaA)*math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)
 auxiliar12 = math.pow(auxiliar1,2) #Quadrado do auxiliar 1
 
-elevacaoA = (aux1*auxiliar11-1)/(math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar11))
-anguloElevacaoA = 90-math.acos(elevacaoA)
+conta = math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar11)
+elevacaoA = (aux1*auxiliar11-1)/(conta)
+
+#anguloElevacaoA = 90-math.acos(elevacaoA)
 
 #----Estação B
 auxiliar13 = math.cos(latitudeEstacaoTerrenaB)*math.cos(longitudeEstacaoTerrenaB-longitudeSatelite)
 
 elevacaoB = (aux1*auxiliar13-1)/(math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar13))
-anguloElevacaoB = 90-math.acos(elevacaoB)
+#anguloElevacaoB = 90-math.acos(elevacaoB)
 
 #-----------------------
 #CALCULO DO AZIMUTE DAS ESTAÇÕES TERRENAS
 a = math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)*math.sin(latitudeEstacaoTerrenaA)
 b = math.cos(latitudeEstacaoTerrenaA)*math.cos(longitudeSatelite-longitudeEstacaoTerrenaA)
 azim = a/b
-azimuteA = 180 - math.acos(azim)
+#azimuteA = 180 - math.acos(azim)
 
 #-- X - PARÂMETROS DO SISTEMA
-frequenciaUplink = input('Digite a Frequencia de uplink Fu =  ')
-frequenciaDownlink = input('Digite a Frequencia de Downlink  Fd =  ')
+frequenciaUplink = int(input('Digite a Frequencia de uplink Fu =  '))
+frequenciaDownlink = int(input('Digite a Frequencia de Downlink  Fd =  '))
 print('')
 
 #densidadeFluxoPorTransponder = input('Digite a Densidade de fluxo no Satélite p/ Sat Transponder =   ')
@@ -90,8 +90,8 @@ print('')
 
 #EIRP_satelite = input('Digite EIRP de Saturação do Satélite (EIRPsat) =  ')
 
-#backOffEntrada = input('Digite Back off de entrada do Satélite (BOin) =  ')
-#backOffSaida = input('Digite Back off de Saída do Satélite (BOout) = ')
+backOffEntrada = int(input('Digite Back off de entrada do Satélite (BOin) =  '))
+backOffSaida = int(input('Digite Back off de Saída do Satélite (BOout) = '))
 
 #bitErrorRate = input('Digite Probabilidade ou Erro de Bit (BER)')
 
@@ -117,14 +117,14 @@ atenEspacoLivre_semChuva2 = atenEspacoLivre_dB2 + La
 
 
 # 3º INCLINAÇÃO DO PERCURSO NA CHUVA
-inclinacaoPercursoChuvaA = ((hr-hs)*1000)/math.sin(anguloElevacaoA)
-inclinacaoPercursoChuvaB = ((hr-hs)*1000)/math.sin(anguloElevacaoB)
+#inclinacaoPercursoChuvaA = ((hr-hs)*1000)/math.sin(anguloElevacaoA)
+#inclinacaoPercursoChuvaB = ((hr-hs)*1000)/math.sin(anguloElevacaoB)
 #Hr - altitude da Chuva em Km, ver nas constantes acima
 #Hs - Altitude da Estação Terrena em relação ao nível do mar, Para Angola varia de 1.5 Km à 1.5 Km, ver nas constantes acima
 
 #Conversão em dB
-inclinacaoPercursoChuvaA_dB = 10*math.log10(inclinacaoPercursoChuvaA)
-inclinacaoPercursoChuvaB_dB = 10*math.log10(inclinacaoPercursoChuvaB)
+#inclinacaoPercursoChuvaA_dB = 10*math.log10(inclinacaoPercursoChuvaA)
+#inclinacaoPercursoChuvaB_dB = 10*math.log10(inclinacaoPercursoChuvaB)
 
 # 4º DISTÂNCIA DA CHUVA COM TAXA PLUVIOMÉTRICA
 taxaPluvometrica = 50 #corresponde ao R0,001; ver na definição das constantes
@@ -132,23 +132,23 @@ aux = (-0.015)*taxaPluvometrica
 distanciaChuva = 35*math.pow(euler,aux)
 
 # 4.1º DISTÂNCIA DA CHUVA PARA R DE 1%
-auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
-auxiliando2 = (inclinacaoPercursoChuvaB/distanciaChuva)*math.cos(anguloElevacaoB)
-distanciaChuva_R001_A = 1/(1+auxiliando)
-distanciaChuva_R001_B = 1/(1+auxiliando2)
+#auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
+#auxiliando2 = (inclinacaoPercursoChuvaB/distanciaChuva)*math.cos(anguloElevacaoB)
+#distanciaChuva_R001_A = 1/(1+auxiliando)
+#distanciaChuva_R001_B = 1/(1+auxiliando2)
 
 #5º CÁLCULO DA ATENUAÇÃO NO PERCURSO DE DESCIDA COM CHUVA
 #Estação A
-auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001_A
-auxiliando1_dB = 10*math.log10(auxiliando1)
+#auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001_A
+#auxiliando1_dB = 10*math.log10(auxiliando1)
 
-atenEspacoLivre_comChuva_A = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
+#atenEspacoLivre_comChuva_A = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
 
 #Estação B
-auxiliando2 = Aesp * inclinacaoPercursoChuvaB_dB * distanciaChuva_R001_B
-auxiliando2_dB = 10*math.log10(auxiliando2)
+#auxiliando2 = Aesp * inclinacaoPercursoChuvaB_dB * distanciaChuva_R001_B
+#auxiliando2_dB = 10*math.log10(auxiliando2)
 
-atenEspacoLivre_comChuva_B = La + inclinacaoPercursoChuvaB_dB + auxiliando2_dB
+#atenEspacoLivre_comChuva_B = La + inclinacaoPercursoChuvaB_dB + auxiliando2_dB
 
 #6º CÁLCULO DA PERDA NA TRANSMISSÃO
 erroMaximoApontamento = 0.1 #Encontrar na definição de constantes
@@ -187,11 +187,82 @@ TG = 10
 Tsky = 16
 temperaturaSistema = TG + Tsky
 
+#11º CÁLCULO DA TAXA DE TRANSMISSÃO
+#Serviço para transmissão de dados em Kbps = 64 e Número de canais = 32.
+servicoTx = 64
+numCanais = 32
+taxtaTransmissao = servicoTx * numCanais
+
+#12º CÁLCULO DE SINAL RUÍDO
+k = 1.38*math.pow(10, -23)
+k1=10*math.log10(1/k)
+
+EIRP = 51 #EIRP de saturação do Satélite
+relGTu =3.2 #Factor de Mérito Antena do Satélite (relGTu)
+
+#C_No = EIRP - atenEspacoLivre_comChuva_A + relGTu + k1
+
+#13º CÁLCULO DE GANHO DO SISTEMA NA RECEPÇÃO
+Grx = relGTu + 10*math.log10(temperaturaSistema)
+Grx_watts = math.pow(10, (Grx/10))
+
+#13.1º CÁLCULO DE GANHO DO SISTEMA NA TRANSMISSÃO
+ganhoTx = (20*math.log10(frequenciaUplink))-(20*math.log10(frequenciaDownlink))+Grx
+Gtx_watts = math.pow(10, ganhoTx/10)
+
+#14º CÁLCULO DO DIÂMETRO DA ANTENA NA TRANSMISSÃO
+auxiliando3 = (Gtx_watts/FactorRendimento)*velocidadeLuz
+auxiliando4 = math.pi * frequenciaUplink
+
+diametroTx = math.sqrt(auxiliando3/auxiliando4)
+
+#14.1º CÁLCULO DO DIÂMETRO DA ANTENA NA RECEPÇÃO
+auxiliando5 = (Grx_watts/FactorRendimento)*velocidadeLuz
+auxiliando6 = math.pi * frequenciaDownlink
+
+diametroRx = math.sqrt(auxiliando5/auxiliando6)
+
+#15º CÁLCULO DO GANHO ESPECÍFICO DA ANTENA NA TRANSMISSÃO DE ACORDO O DIAMETRO DA ANTENA
+auxiliando7 = math.pi*diametroTx*frequenciaUplink/velocidadeLuz
+GanhoEspTx = FactorRendimento*math.pow(auxiliando7,2)
+
+#Conversão em dB
+GanhoEspTx_dB = 10*math.log10(GanhoEspTx)
+
+#15.1º CÁLCULO DO GANHO ESPECÍFICO DA ANTENA NA RECEPÇÃO DE ACORDO O DIAMETRO DA ANTENA
+auxiliando8 = math.pi*diametroRx*frequenciaDownlink/velocidadeLuz
+GanhoEspRx = FactorRendimento*math.pow(auxiliando8,2)
+
+#Conversão em dB
+GanhoEspRx_dB = 10*math.log10(GanhoEspRx)
+
+#16º CÁLCULO DO EIRP NA TRANSMISSÃO E NA RECEPÇÃO
+densidadeFluxo = -91 #Inserido pelo usuário
+Latu = 1.5 #Perda colocar na definição das constantes do sistema
+Latd = 1.2 #Perda colocar na definição das constantes do sistema
+
+#Na transmissão
+EIRP_tx = densidadeFluxo + 10*math.log10(4*math.pi*math.pow(diametroTx,2)) + Latu + backOffEntrada
+
+#Na recepção
+EIRP_rx = densidadeFluxo + 10*math.log10(4*math.pi*math.pow(diametroRx,2)) + Latd + backOffSaida
+
+#17º CÁLCULO DE POTÊNCIA NA TRANSMISSÃO
+PotenciaTx = EIRP_tx - ganhoTx
+PotenciaTx_watts = math.pow(10, PotenciaTx/10)
+
+#valor absoluto em watts
+auxiliando1111 = PotenciaTx_watts*math.pow(10, -6)
+PotenciaTx_watts_absoluto = abs(round(auxiliando1111))
+
+#17.1º CÁLCULO DE POTÊNCIA NA RECEPÇÃO
+PotenciaRx = EIRP_rx - Grx
+PotenciaRx_watts = math.pow(10, PotenciaRx/10)
 
 print("---------------------------------------------------------------------------------")
-print("Latitude Estação terrena - ",latitudeEstacaoTerrenaA,"º")
-print("Longitude Estação terrena - ",longitudeEstacaoTerrenaA,"º")
-print("Longitude Do Satélite - ",longitudeSatelite,"º")
+print("Latitude Estação terrena = ",latitudeEstacaoTerrenaA,"º")
+print("Longitude Estação terrena = ",longitudeEstacaoTerrenaA,"º")
+print("Longitude Do Satélite = ",longitudeSatelite,"º")
 print()
-print("Distância Entre Estação terrena A e o Satélite - ", distancia_sat_EstTerrenaA,"km")
-print("Distância Entre Estação terrena B e o Satélite - ", distancia_sat_EstTerrenaB,"km")
+print("Distância Entre Estação terrena A e o Satélite = ", distancia_sat_EstTerrenaA,"km")
+print("Distância Entre Estação terrena B e o Satélite = ", distancia_sat_EstTerrenaB,"km")
