@@ -45,7 +45,8 @@ latitudeEstacaoTerrenaB = int(input("Insere a latitude da estação terrena 2: "
 longitudeEstacaoTerrenaB = int(input("Insere a longitude da estação terrena 2: "))
 
 #-- 1.2º Latitudes e longitudes do satélite
-longitudeSatelite = int(input("Insere a longitude do satélite: "))
+nomeSatelite = input('Qual é o nome do satélite: ')
+longitudeSatelite = int(input("Insera a longitude do satélite: "))
 
 #CALCULO DA DISTÂNCIA ENTRE A ESTAÇÃO TERRENA E O SATÉLITE
 aux1 = math.pow(RaioTerra,2) + math.pow(CentroMassa,2)
@@ -58,20 +59,29 @@ distancia_sat_EstTerrenaB = math.sqrt(aux1 - (aux2*aux4))
 
 #CALCULO DO ÂNGULO DE ELEVAÇÃO DAS ESTAÇÕES TERRENAS
 #----Estação A
-auxiliar1 = CentroMassa/RaioTerra
-auxiliar11 = math.cos(latitudeEstacaoTerrenaA)*math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)
-auxiliar12 = math.pow(auxiliar1,2) #Quadrado do auxiliar 1
+auxAngElev1 = CentroMassa/RaioTerra
+auxAngElev2 = math.cos(latitudeEstacaoTerrenaA)
+auxAngElev3 = math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)
+auxAngElev4 = math.pow(auxAngElev1,2) #Quadrado do auxiliar 1
 
-conta = math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar11)
-elevacaoA = (aux1*auxiliar11-1)/(conta)
+auxAngElev5 = (auxAngElev1*auxAngElev2*auxAngElev3)-1
+auxAngElev6 = 1+auxAngElev4
+auxAngElev7 = 2*auxAngElev1*auxAngElev2*auxAngElev3
 
-#anguloElevacaoA = 90-math.acos(elevacaoA)
+elevacaoA = auxAngElev5/math.sqrt(auxAngElev6-auxAngElev7)
+
+anguloElevacaoA = 90-math.acos(elevacaoA)
 
 #----Estação B
-auxiliar13 = math.cos(latitudeEstacaoTerrenaB)*math.cos(longitudeEstacaoTerrenaB-longitudeSatelite)
+auxAngElev2B = math.cos(latitudeEstacaoTerrenaB)
+auxAngElev3B = math.cos(longitudeEstacaoTerrenaB-longitudeSatelite)
 
-elevacaoB = (aux1*auxiliar13-1)/(math.sqrt(1+(auxiliar12))-(2*auxiliar1*auxiliar13))
-#anguloElevacaoB = 90-math.acos(elevacaoB)
+auxAngElev5B = (auxAngElev1*auxAngElev2B*auxAngElev3B)-1
+auxAngElev7B = 2*auxAngElev1*auxAngElev2B*auxAngElev3B
+
+elevacaoB = auxAngElev5B/math.sqrt(auxAngElev6-auxAngElev7B)
+
+anguloElevacaoB = 90-math.acos(elevacaoB)
 
 #-----------------------
 #CALCULO DO AZIMUTE DAS ESTAÇÕES TERRENAS
@@ -260,9 +270,20 @@ PotenciaRx = EIRP_rx - Grx
 PotenciaRx_watts = math.pow(10, PotenciaRx/10)
 
 print("---------------------------------------------------------------------------------")
-print("Latitude Estação terrena = ",latitudeEstacaoTerrenaA,"º")
-print("Longitude Estação terrena = ",longitudeEstacaoTerrenaA,"º")
+print("     IMPRESSÃO DE DADOS       ")
+print("---------------------------------------------------------------------------------")
+print("Latitude Estação terrena",nomeEstacaoA," = ",latitudeEstacaoTerrenaA,"º")
+print("Latitude Estação terrena",nomeEstacaoA," = ",longitudeEstacaoTerrenaA,"º")
+print("-----------------")
+print("Longitude Estação terrena ",nomeEstacaoB," = ",latitudeEstacaoTerrenaB,"º")
+print("Latitude Estação terrena",nomeEstacaoB," = ",longitudeEstacaoTerrenaB,"º")
+print("-----------------")
 print("Longitude Do Satélite = ",longitudeSatelite,"º")
 print()
-print("Distância Entre Estação terrena A e o Satélite = ", distancia_sat_EstTerrenaA,"km")
-print("Distância Entre Estação terrena B e o Satélite = ", distancia_sat_EstTerrenaB,"km")
+print("-----------------")
+print("Distância Entre Estação terrena A",nomeEstacaoA," e o Satélite = ", distancia_sat_EstTerrenaA,"km")
+print("Distância Entre Estação terrena B",nomeEstacaoB," e o Satélite = ", distancia_sat_EstTerrenaB,"km")
+print()
+print("-----------------")
+print("Ângulo de Elevação",nomeEstacaoA," = ",anguloElevacaoA,"º")
+print("Ângulo de Elevação",nomeEstacaoB," = ",anguloElevacaoB,"º")
