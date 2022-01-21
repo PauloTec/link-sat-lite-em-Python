@@ -85,10 +85,29 @@ anguloElevacaoB = 90-math.acos(elevacaoB)
 
 #-----------------------
 #CALCULO DO AZIMUTE DAS ESTAÇÕES TERRENAS
-a = math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)*math.sin(latitudeEstacaoTerrenaA)
-b = math.cos(latitudeEstacaoTerrenaA)*math.cos(longitudeSatelite-longitudeEstacaoTerrenaA)
-azim = a/b
-#azimuteA = 180 - math.acos(azim)
+#----Estação A
+auxAzimute1 = math.cos(longitudeEstacaoTerrenaA-longitudeSatelite)
+auxAzimute11 = math.pow(auxAzimute1, 2)
+
+auxAzimute2 = math.cos(latitudeEstacaoTerrenaA)
+auxAzimute22 = math.pow(auxAzimute2, 2)
+auxAzimute23 = auxAzimute11*auxAzimute22
+auxAzimute3 = math.sqrt(1-(auxAzimute23))
+
+azimute = (auxAzimute1*math.sin(latitudeEstacaoTerrenaA))/auxAzimute3
+azimuteEstacaoA = 180 - math.acos(azimute)
+
+#----Estação B
+auxAzimute1B = math.cos(longitudeEstacaoTerrenaB-longitudeSatelite)
+auxAzimute11B = math.pow(auxAzimute1B, 2)
+
+auxAzimute2B = math.cos(latitudeEstacaoTerrenaB)
+auxAzimute22B = math.pow(auxAzimute2B, 2)
+auxAzimute23B = auxAzimute11*auxAzimute22B
+auxAzimute3B = math.sqrt(1-(auxAzimute23B))
+
+azimuteB = (auxAzimute1B*math.sin(latitudeEstacaoTerrenaB))/auxAzimute3B
+azimuteEstacaoB = 180 - math.acos(azimuteB)
 
 #-- X - PARÂMETROS DO SISTEMA
 frequenciaUplink = int(input('Digite a Frequencia de uplink Fu =  '))
@@ -104,6 +123,10 @@ backOffEntrada = int(input('Digite Back off de entrada do Satélite (BOin) =  ')
 backOffSaida = int(input('Digite Back off de Saída do Satélite (BOout) = '))
 
 #bitErrorRate = input('Digite Probabilidade ou Erro de Bit (BER)')
+
+#-----------------------------------------------------------------
+# ATENUAÇÃO NO ESPAÇO LIVRE
+#-----------------------------------------------------------------
 
 #-- 2º CÁLCULO DA ATENUAÇÃO NO PERCURSO DE SUBIDA SEM CHUVA
 auxilio = velocidadeLuz/frequenciaUplink
@@ -125,16 +148,15 @@ atenEspacoLivre_dB2 = 10*math.log10(atenEspacoLivre2)
 #Atenuação total sem chuva
 atenEspacoLivre_semChuva2 = atenEspacoLivre_dB2 + La
 
-
 # 3º INCLINAÇÃO DO PERCURSO NA CHUVA
-#inclinacaoPercursoChuvaA = ((hr-hs)*1000)/math.sin(anguloElevacaoA)
-#inclinacaoPercursoChuvaB = ((hr-hs)*1000)/math.sin(anguloElevacaoB)
+inclinacaoPercursoChuvaA = ((hr-hs)*1000)/math.sin(anguloElevacaoA)
+inclinacaoPercursoChuvaB = ((hr-hs)*1000)/math.sin(anguloElevacaoB)
 #Hr - altitude da Chuva em Km, ver nas constantes acima
 #Hs - Altitude da Estação Terrena em relação ao nível do mar, Para Angola varia de 1.5 Km à 1.5 Km, ver nas constantes acima
 
 #Conversão em dB
-#inclinacaoPercursoChuvaA_dB = 10*math.log10(inclinacaoPercursoChuvaA)
-#inclinacaoPercursoChuvaB_dB = 10*math.log10(inclinacaoPercursoChuvaB)
+inclinacaoPercursoChuvaA_dB = 10*math.log10(inclinacaoPercursoChuvaA)
+inclinacaoPercursoChuvaB_dB = 10*math.log10(inclinacaoPercursoChuvaB)
 
 # 4º DISTÂNCIA DA CHUVA COM TAXA PLUVIOMÉTRICA
 taxaPluvometrica = 50 #corresponde ao R0,001; ver na definição das constantes
@@ -142,23 +164,23 @@ aux = (-0.015)*taxaPluvometrica
 distanciaChuva = 35*math.pow(euler,aux)
 
 # 4.1º DISTÂNCIA DA CHUVA PARA R DE 1%
-#auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
-#auxiliando2 = (inclinacaoPercursoChuvaB/distanciaChuva)*math.cos(anguloElevacaoB)
-#distanciaChuva_R001_A = 1/(1+auxiliando)
-#distanciaChuva_R001_B = 1/(1+auxiliando2)
+auxiliando = (inclinacaoPercursoChuvaA/distanciaChuva)*math.cos(anguloElevacaoA)
+auxiliando2 = (inclinacaoPercursoChuvaB/distanciaChuva)*math.cos(anguloElevacaoB)
+distanciaChuva_R001_A = 1/(1+auxiliando)
+distanciaChuva_R001_B = 1/(1+auxiliando2)
 
 #5º CÁLCULO DA ATENUAÇÃO NO PERCURSO DE DESCIDA COM CHUVA
 #Estação A
-#auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001_A
-#auxiliando1_dB = 10*math.log10(auxiliando1)
+auxiliando1 = Aesp * inclinacaoPercursoChuvaA_dB * distanciaChuva_R001_A
+auxiliando1_dB = 10*math.log10(auxiliando1)
 
-#atenEspacoLivre_comChuva_A = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
+atenEspacoLivre_comChuva_A = La + inclinacaoPercursoChuvaA_dB + auxiliando1_dB
 
 #Estação B
-#auxiliando2 = Aesp * inclinacaoPercursoChuvaB_dB * distanciaChuva_R001_B
-#auxiliando2_dB = 10*math.log10(auxiliando2)
+auxiliando2 = Aesp * inclinacaoPercursoChuvaB_dB * distanciaChuva_R001_B
+auxiliando2_dB = 10*math.log10(auxiliando2)
 
-#atenEspacoLivre_comChuva_B = La + inclinacaoPercursoChuvaB_dB + auxiliando2_dB
+atenEspacoLivre_comChuva_B = La + inclinacaoPercursoChuvaB_dB + auxiliando2_dB
 
 #6º CÁLCULO DA PERDA NA TRANSMISSÃO
 erroMaximoApontamento = 0.1 #Encontrar na definição de constantes
@@ -270,7 +292,7 @@ PotenciaRx = EIRP_rx - Grx
 PotenciaRx_watts = math.pow(10, PotenciaRx/10)
 
 print("---------------------------------------------------------------------------------")
-print("     IMPRESSÃO DE DADOS       ")
+print("     IMPRESSÃO DE DADOS                                                          ")
 print("---------------------------------------------------------------------------------")
 print("Latitude Estação terrena",nomeEstacaoA," = ",latitudeEstacaoTerrenaA,"º")
 print("Latitude Estação terrena",nomeEstacaoA," = ",longitudeEstacaoTerrenaA,"º")
@@ -287,3 +309,64 @@ print()
 print("-----------------")
 print("Ângulo de Elevação",nomeEstacaoA," = ",anguloElevacaoA,"º")
 print("Ângulo de Elevação",nomeEstacaoB," = ",anguloElevacaoB,"º")
+
+print("-----------------")
+print("Azimute da Estação ",nomeEstacaoA," = ",azimuteEstacaoA,"º")
+print("Azimute da Estação ",nomeEstacaoA," = ",azimuteEstacaoB,"º")
+
+print("-----------------------------------------------------------------")
+print("             ATENUAÇÃO NO ESPAÇO LIVRE                           ")
+print("-----------------------------------------------------------------")
+
+print("----- Percurso sem chuva                          ")
+
+print("SUBIDA SEM CHUVA")
+print("Atenuação no percurso de Subida sem Chuva ",atenEspacoLivre)
+print("Equivalência em dB =",atenEspacoLivre_dB)
+print("Atenuação Total no percurso sem Chuva=",atenEspacoLivre_semChuva)
+
+print("DESCIDA SEM CHUVA")
+print("Atenuação no percurso de descida sem Chuva ",atenEspacoLivre2)
+print("Equivalência em dB =",atenEspacoLivre_dB2)
+print("Atenuação Total no percurso sem Chuva=",atenEspacoLivre_semChuva2)
+
+print()
+print("----- Percurso com chuva                          ")
+print("-----------------")
+print("INCLINAÇÃO DO PERCURSO COM CHUVA")
+print("Para estação A =",inclinacaoPercursoChuvaA)
+print("Equivalência na estação A em dB",inclinacaoPercursoChuvaA_dB)
+
+print()
+print("Para estação B",inclinacaoPercursoChuvaB)
+print("Equivalência na estação B em dB",inclinacaoPercursoChuvaB_dB)
+
+print()
+print("DISTÂNCIA DA CHUVA PARA R DE 1%")
+print("Para estação A =",distanciaChuva_R001_A)
+print("Para estação B =",distanciaChuva_R001_B)
+
+print()
+print("ATENUAÇÃO NO PERCURSO COM CHUVA")
+
+print("Para estação A =",atenEspacoLivre_comChuva_A)
+print("Para estação B =",atenEspacoLivre_comChuva_B)
+
+print("-----------------------------------------------------------------")
+print("             PERDA NA TRANSMISSÃO E NA RECEPÇÃO                  ")
+print("-----------------------------------------------------------------")
+
+print()
+print("Perda na transmissão = ",perdaTx)
+print("Equivalente em dB = ",perdaTx_dB)
+
+print()
+print("Perda na recepção = ",perdaRx)
+print("Equivalente em dB = ",perdaRx_dB)
+
+print("-----------------------------------------------------------------")
+print("             DISPONIBILIDADE DO LINK                  ")
+print("-----------------------------------------------------------------")
+print()
+print("Disponibilidade de link = ",disponibilidadeLink)
+
