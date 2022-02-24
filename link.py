@@ -232,7 +232,7 @@ k1=10*math.log10(1/k)
 EIRP = 51 #EIRP de saturação do Satélite
 relGTu =3.2 #Factor de Mérito Antena do Satélite (relGTu)
 
-#C_No = EIRP - atenEspacoLivre_comChuva_A + relGTu + k1
+C_No = EIRP - atenEspacoLivre_comChuva_A + relGTu + k1
 
 #13º CÁLCULO DE GANHO DO SISTEMA NA RECEPÇÃO
 Grx = relGTu + 10*math.log10(temperaturaSistema)
@@ -291,9 +291,9 @@ PotenciaTx_watts_absoluto = abs(round(auxiliando1111))
 PotenciaRx = EIRP_rx - Grx
 PotenciaRx_watts = math.pow(10, PotenciaRx/10)
 
-print("---------------------------------------------------------------------------------")
-print("     IMPRESSÃO DE DADOS                                                          ")
-print("---------------------------------------------------------------------------------")
+print("---------------------------------------------------------------------")
+print("     IMPRESSÃO DE DADOS                                              ")
+print("---------------------------------------------------------------------")
 print("Latitude Estação terrena",nomeEstacaoA," = ",latitudeEstacaoTerrenaA,"º")
 print("Latitude Estação terrena",nomeEstacaoA," = ",longitudeEstacaoTerrenaA,"º")
 print("-----------------")
@@ -315,24 +315,28 @@ print("Azimute da Estação ",nomeEstacaoA," = ",azimuteEstacaoA,"º")
 print("Azimute da Estação ",nomeEstacaoA," = ",azimuteEstacaoB,"º")
 
 print("-----------------------------------------------------------------")
-print("             ATENUAÇÃO NO ESPAÇO LIVRE                           ")
+print("           ATENUAÇÃO NO ESPAÇO LIVRE                           ")
 print("-----------------------------------------------------------------")
-
+print()
 print("----- Percurso sem chuva                          ")
-
+print("----------------------------------------------------")
+print()
 print("SUBIDA SEM CHUVA")
 print("Atenuação no percurso de Subida sem Chuva ",atenEspacoLivre)
 print("Equivalência em dB =",atenEspacoLivre_dB)
 print("Atenuação Total no percurso sem Chuva=",atenEspacoLivre_semChuva)
 
+print()
 print("DESCIDA SEM CHUVA")
 print("Atenuação no percurso de descida sem Chuva ",atenEspacoLivre2)
 print("Equivalência em dB =",atenEspacoLivre_dB2)
+
+print()
 print("Atenuação Total no percurso sem Chuva=",atenEspacoLivre_semChuva2)
 
 print()
 print("----- Percurso com chuva                          ")
-print("-----------------")
+print("--------------------------------------------------")
 print("INCLINAÇÃO DO PERCURSO COM CHUVA")
 print("Para estação A =",inclinacaoPercursoChuvaA)
 print("Equivalência na estação A em dB",inclinacaoPercursoChuvaA_dB)
@@ -363,10 +367,88 @@ print("Equivalente em dB = ",perdaTx_dB)
 print()
 print("Perda na recepção = ",perdaRx)
 print("Equivalente em dB = ",perdaRx_dB)
+print()
 
 print("-----------------------------------------------------------------")
-print("             DISPONIBILIDADE DO LINK                  ")
+print("            DISPONIBILIDADE E INDISPONIBILIDADE DO LINK                  ")
 print("-----------------------------------------------------------------")
 print()
 print("Disponibilidade de link = ",disponibilidadeLink)
+print("Indisponibilidade de link = ",indisponibilidade)
+print()
+
+print("-----------------------------------------------------------------")
+print("             CÁLCULO DA TEMPERATURA DO SISTEMA                  ")
+print("-----------------------------------------------------------------")
+print()
+print("Temperatura do Sistema = ",temperaturaSistema)
+print()
+
+print("-----------------------------------------------------------------")
+print("             CÁLCULO DA TAXA DE TRANSMISSÃO                  ")
+print("-----------------------------------------------------------------")
+print()
+print("Para serviço para transmissão de dados em Kbps = 64 e Número de canais = 32.")
+print("Taxa de Transmissão do Sistema = ",taxtaTransmissao)
+print()
+
+print("-----------------------------------------------------------------")
+print("             CÁLCULO DE SINAL RUÍDO                 ")
+print("-----------------------------------------------------------------")
+print()
+print("Sinal Ruído = ",C_No)
+print()
+
+print("-----------------------------------------------------------------")
+print("     CÁLCULO DE GANHO DO SISTEMA NA TRANSMISSÃO RECEPÇÃO          ")
+print("-----------------------------------------------------------------")
+print()
+print("Ganho na transmissão = ",ganhoTx)
+print("Ganho na transmissão (watts) = ",Gtx_watts)
+
+print()
+print("Ganho na recepção = ",Grx)
+print("Ganho na recepção (watts) = ",Grx_watts)
+
+print()
+print("-----------------------------------------------------------------")
+print("     CÁLCULO DO DIÂMETRO DA ANTENA NA TRANSMISSÃO E RECEPÇÃO          ")
+print("-----------------------------------------------------------------")
+print()
+print("Diâmetro na transmissão = ",diametroTx)
+print("Diâmetro na transmissão = ",diametroRx)
+
+print()
+print("--------------------------------------------------------------------------------------------")
+print("    CÁLCULO DO GANHO ESPECÍFICO DA ANTENA NA TRANSMISSÃO DE ACORDO O DIÂMETRO DA ANTENA     ")
+print("--------------------------------------------------------------------------------------------")
+print()
+print("Ganho específico na transmissão = ",GanhoEspTx)
+print("Ganho específico na transmissão (dB) = ",GanhoEspTx_dB)
+
+print()
+print("Ganho específico na recepção = ",GanhoEspRx)
+print("Ganho específico na recepção (dB) = ",GanhoEspRx_dB)
+
+print()
+print("---------------------------------------------------------------")
+print("    CÁLCULO DO EIRP NA TRANSMISSÃO E NA RECEPÇÃO    ")
+print("-------------------------------------------------------------")
+print()
+print("EIRP na transmissão = ",EIRP_tx)
+print("EIRP na transmissão = ",EIRP_rx)
+
+print()
+print("---------------------------------------------------------------")
+print("    CÁLCULO DE POTÊNCIA NA TRANSMISSÃO      ")
+print("-------------------------------------------------------------")
+print()
+print("Potência total na transmissão = ",PotenciaTx)
+print("Potência total na transmissão (watts) = ",PotenciaTx_watts)
+
+print()
+print("valor absoluto em watts de Potência total na transmissão = ",PotenciaTx_watts_absoluto)
+print("valor absoluto em watts de Potência total na recepção = ",PotenciaRx_watts)
+
+
 
